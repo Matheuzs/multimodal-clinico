@@ -2,7 +2,6 @@
 
   local_whisper  Whisper rodando local (padrão; sem custo, sem rede após baixar o modelo)
   google         SpeechRecognition.recognize_google (aula 04; API web gratuita, não oficial)
-  azure          Azure Speech to Text, camada F0 (implementado na Task 10)
   mock           lê a transcrição humana (TextGrid) ao lado do áudio; só para desenvolvimento/testes
 
 Escolha via variável TRANSCRIBER (.env) ou get_transcriber("nome").
@@ -15,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from src.audio.textgrid import read_textgrid
-from src.config import ROOT, load_config, use_azure
+from src.config import ROOT, load_config
 
 
 @dataclass
@@ -140,14 +139,7 @@ class GoogleTranscriber(Transcriber):
         return Transcript(" ".join(s[2] for s in segs), self.name, self.language, segs)
 
 
-class AzureTranscriber(Transcriber):
-    name = "azure"
-
-    def transcribe(self, wav_path) -> Transcript:
-        raise NotImplementedError("Azure Speech será implementado na Task 10 (camada F0, com flag).")
-
-
-_REGISTRY = {c.name: c for c in (MockTranscriber, LocalWhisperTranscriber, GoogleTranscriber, AzureTranscriber)}
+_REGISTRY = {c.name: c for c in (MockTranscriber, LocalWhisperTranscriber, GoogleTranscriber)}
 
 
 def get_transcriber(name: str | None = None, cfg: dict | None = None) -> Transcriber:
@@ -155,6 +147,4 @@ def get_transcriber(name: str | None = None, cfg: dict | None = None) -> Transcr
     name = (name or os.getenv("TRANSCRIBER") or "local_whisper").strip().lower()
     if name not in _REGISTRY:
         raise ValueError(f"Transcritor desconhecido: {name!r}. Opções: {sorted(_REGISTRY)}")
-    if name == "azure" and not use_azure():
-        raise TranscriptionError("Azure desligado: defina USE_AZURE=true no .env para usar este provedor.")
     return _REGISTRY[name](cfg)

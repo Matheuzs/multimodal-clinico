@@ -115,4 +115,9 @@ audio:
 
 fusion:
   severity_weights: {low: 1, medium: 2, high: 3}
-  alert_threshold: 4
+  alert_threshold: 4          # score >= limiar => ALERTA
+  attention_threshold: 2      # score >= este valor (e < alert) => ATENÇÃO
+  convergence_bonus: 1        # soma extra quando visão E áudio têm achado >= medium
+  alert_requires_convergence: true   # ALERTA por score só com vídeo E áudio; uma modalidade sozinha chega a ATENÇÃO
+  high_override: true         # qualquer achado de severidade alta gera ALERTA, independente do score
+  vision_min_flagged_ratio: 0.2   # fração mínima de repetições sinalizadas para a regra contar (evita ruído isolado)

@@ -16,6 +16,3 @@ def load_config(path: Path | None = None) -> dict:
     with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-
-def use_azure() -> bool:
-    return os.getenv("USE_AZURE", "false").strip().lower() == "true"

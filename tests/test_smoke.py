@@ -1,4 +1,4 @@
-from src.config import ROOT, load_config, use_azure
+from src.config import ROOT, load_config
 
 
 def test_config_loads():
@@ -8,11 +8,7 @@ def test_config_loads():
     assert cfg["vision"]["frame_stride"] >= 1
 
 
-def test_azure_off_by_default(monkeypatch):
-    monkeypatch.delenv("USE_AZURE", raising=False)
-    assert use_azure() is False
-
 
 def test_structure_exists():
-    for d in ["ingestion", "vision", "audio", "cloud", "fusion", "report"]:
+    for d in ["ingestion", "vision", "audio", "fusion", "report"]:
         assert (ROOT / "src" / d / "__init__.py").exists()

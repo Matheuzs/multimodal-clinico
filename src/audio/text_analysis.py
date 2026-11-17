@@ -10,7 +10,7 @@ import os
 import re
 from dataclasses import dataclass, field
 
-from src.config import load_config, use_azure
+from src.config import load_config
 from src.findings import SEVERITY_ORDER, Finding
 
 NEGATORS = {"no", "not", "never", "without", "denies", "denied", "deny", "none", "nothing", "nor",
@@ -122,11 +122,7 @@ def get_sentiment_analyzer(name: str | None = None, cfg: dict | None = None) -> 
         return TransformersSentiment(cfg)
     if name == "mock":
         return LexiconSentiment()
-    if name == "azure":
-        if not use_azure():
-            raise RuntimeError("Azure desligado: defina USE_AZURE=true no .env para usar este provedor.")
-        raise NotImplementedError("Azure Text Analytics será implementado na Task 10.")
-    raise ValueError(f"Analisador desconhecido: {name!r}. Opções: local, mock, azure")
+    raise ValueError(f"Analisador desconhecido: {name!r}. Opções: local, mock")
 
 
 # ---------------------------------------------------------------- resultado

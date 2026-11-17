@@ -84,8 +84,5 @@ def test_factory(monkeypatch):
     monkeypatch.delenv("TEXT_ANALYZER", raising=False)
     assert get_sentiment_analyzer().name == "local"
     assert get_sentiment_analyzer("mock").name == "mock"
-    monkeypatch.delenv("USE_AZURE", raising=False)
-    with pytest.raises(RuntimeError, match="USE_AZURE"):
-        get_sentiment_analyzer("azure")
     with pytest.raises(ValueError):
         get_sentiment_analyzer("xyz")

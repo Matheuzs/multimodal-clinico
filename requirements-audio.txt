@@ -8,4 +8,3 @@ pydub>=0.25
 SpeechRecognition>=3.10
 transformers>=4.40
 torch
-# opcional (Task 10): azure-cognitiveservices-speech, azure-ai-textanalytics

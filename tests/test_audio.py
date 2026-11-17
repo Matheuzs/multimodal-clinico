@@ -130,11 +130,10 @@ def test_factory_default_and_unknown(monkeypatch):
         get_transcriber("xyz")
 
 
-def test_factory_env_and_azure_guard(monkeypatch):
+def test_factory_env(monkeypatch):
     monkeypatch.setenv("TRANSCRIBER", "mock")
     assert get_transcriber().name == "mock"
-    monkeypatch.delenv("USE_AZURE", raising=False)
-    with pytest.raises(TranscriptionError, match="USE_AZURE"):
+    with pytest.raises(ValueError):
         get_transcriber("azure")
 
 
