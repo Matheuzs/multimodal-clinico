@@ -1,4 +1,6 @@
 """Carrega configs/config.yaml e variáveis de ambiente (.env)."""
+from __future__ import annotations
+
 from pathlib import Path
 import os
 
