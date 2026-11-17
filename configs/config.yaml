@@ -15,10 +15,29 @@ vision:
   pose_model_complexity: 1
   min_detection_confidence: 0.5
   frame_stride: 3          # analisa 1 a cada N frames
-  thresholds:              # provisórios, calibrar com REHAB24-6
-    asymmetry_deg: 15
-    min_rom_deg: 40
+  process_width: 640       # redimensiona antes do MediaPipe (acelera; landmarks são normalizados)
+  annotate_width: 960      # largura do vídeo anotado
+  thresholds:
     visibility_min: 0.5
+  # Regras para o Ex1 do REHAB24-6 (abdução lateral do braço direito esticado).
+  # O dataset não define o que é "incorreto" e o erro varia por pessoa, então a avaliação principal
+  # é RELATIVA: compara cada repetição com a linha de base da própria pessoa (primeiras repetições).
+  # Limiares relativos escolhidos olhando PM_001 e PM_012 (10 repetições cada): validar em outros vídeos.
+  exercise:
+    rep_start_deg: 40         # ombro direito sobe acima disso -> início da repetição
+    rep_end_deg: 30           # volta abaixo disso -> fim
+    rep_min_peak_deg: 60      # picos menores são ruído, não repetição
+    smooth_window: 3          # média móvel (frames amostrados)
+    baseline_reps: 3          # nº de repetições iniciais usadas como referência (mediana)
+    rel_peak_pct: 10          # desvio de amplitude (pico do ombro) vs. linha de base, em %
+    rel_speed_pct: 35         # desvio da velocidade de subida, em %
+    rel_elbow_deg: 10         # desvio do cotovelo mínimo vs. linha de base, em graus
+    # Regras absolutas (clinicamente plausíveis; null desliga). Amplitude absoluta desligada:
+    # não generalizou entre pessoas (PM_001 vs PM_012).
+    min_peak_shoulder_deg: null
+    min_elbow_deg: 140        # cotovelo mais dobrado que isso = braço não esticado
+    max_other_shoulder_range_deg: 20   # movimento do ombro oposto = compensação de tronco
+    min_detected_ratio: 0.8   # qualidade: fração de frames com pose
 
 audio:
   whisper_model: base
