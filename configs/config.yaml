@@ -42,18 +42,76 @@ vision:
 audio:
   whisper_model: small
   language: en
-  thresholds:              # provisórios
-    long_pause_s: 1.5
-    low_speech_rate_wps: 1.5
-    low_energy_db: -35
+  vad:
+    top_db: 35              # fala = até 35 dB abaixo do percentil 95 (F1 0,86-0,91 vs TextGrid)
+    min_gap_s: 0.25         # silêncio menor que isso não conta como pausa
+    turn_gap_s: 5.0         # sem canal do médico: silêncios maiores que isso = troca de turno, não pausa
+  # Limiares dos indicadores acústicos: escolhidos a priori, um pouco além da faixa observada em 5
+  # consultas simuladas (atores saudáveis: 2,7-3,5 palavras/s; 1-1,9 pausas longas/min; 8-23 % de pausa).
+  # NÃO são validados clinicamente (o PriMock57 não tem rótulo de fadiga): indicam desvio do padrão
+  # conversacional típico, não diagnóstico.
+  thresholds:
+    long_pause_s: 1.5            # pausa longa
+    max_long_pauses_per_min: 2.5
+    max_pause_ratio: 0.30        # fração do tempo ativo em pausa
+    low_speech_rate_wps: 2.0     # palavras por segundo de fala (sem pausas)
+    energy_drop_db: 6            # queda de energia entre o 1º e o último terço da fala
+  # Dicionário de termos clínicos (inglês). severity: high | medium | low. Padrões são frases/raízes
+  # sem distinção de maiúsculas; termos negados ("no chest pain") não geram alerta.
   critical_terms:
-    - chest pain
-    - shortness of breath
-    - difficulty breathing
-    - dizziness
-    - fainting
-    - severe pain
-    - bleeding
+    chest_pain:
+      severity: high
+      patterns: [chest pain, pain in my chest, chest tightness, tight chest, pressure in my chest, chest hurts]
+    breathing_difficulty:
+      severity: high
+      patterns: [shortness of breath, short of breath, breathless, difficulty breathing, trouble breathing,
+                 can't breathe, cannot breathe, hard to breathe, struggling to breathe, wheez]
+    fainting:
+      severity: high
+      patterns: [faint, passed out, blacked out, lost consciousness, collapsed]
+    neurological:
+      severity: high
+      patterns: [slurred speech, difficulty speaking, trouble speaking, face drooping, numbness, can't feel]
+    severe_pain:
+      severity: high
+      patterns: [severe pain, unbearable pain, worst pain, excruciating, agony]
+    bleeding:
+      severity: high
+      patterns: [bleeding, blood in my, blood in the, coughing up blood, vomiting blood, vomited blood, bloody]
+    dizziness:
+      severity: medium
+      patterns: [dizzy, dizziness, lightheaded, light-headed, vertigo, room is spinning]
+    fever:
+      severity: medium
+      patterns: [fever, feverish, chills, high temperature]
+    vomiting:
+      severity: medium
+      patterns: [vomit, throwing up, can't keep anything down]
+    palpitations:
+      severity: medium
+      patterns: [palpitation, heart racing, racing heart, heart pounding, irregular heartbeat]
+    fatigue:
+      severity: medium
+      patterns: [exhausted, fatigue, tired, no energy, worn out, weak]
+    dehydration:
+      severity: medium
+      patterns: [dehydrat]
+    gi_symptoms:
+      severity: low
+      patterns: [diarrhea, diarrhoea, loose stool, watery stool, nausea, nauseous, stomach pain, abdominal pain]
+    pain:
+      severity: low
+      patterns: [pain, painful, hurts, aching]
+    other_symptoms:
+      severity: low
+      patterns: [headache, cough, rash, itchy, itching, sore throat]
+  # Sentimento: o modelo padrão (SST-2) mede tom negativo/positivo, não humor clínico; frases como
+  # "I have pain" saem negativas. Só gera achado de severidade baixa. Limiar não validado.
+  sentiment:
+    model: null                 # null = padrão do pipeline (distilbert SST-2, aula 06)
+    negative_score_min: 0.9     # confiança mínima para contar uma frase como negativa
+    max_negative_ratio: 0.6     # fração de frases negativas acima da qual há achado
+    min_segments: 5
 
 fusion:
   severity_weights: {low: 1, medium: 2, high: 3}

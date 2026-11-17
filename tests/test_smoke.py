@@ -4,7 +4,7 @@ from src.config import ROOT, load_config, use_azure
 def test_config_loads():
     cfg = load_config()
     assert cfg["audio"]["language"] == "en"
-    assert "chest pain" in cfg["audio"]["critical_terms"]
+    assert "chest pain" in cfg["audio"]["critical_terms"]["chest_pain"]["patterns"]
     assert cfg["vision"]["frame_stride"] >= 1
 
 

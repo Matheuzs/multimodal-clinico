@@ -15,18 +15,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from src.config import load_config
-
-SEVERITY_ORDER = {"low": 1, "medium": 2, "high": 3}
-
-
-@dataclass
-class Finding:
-    rule: str
-    severity: str          # low | medium | high
-    message: str
-    value: float
-    threshold: float
-
+from src.findings import SEVERITY_ORDER, Finding  # noqa: F401  (reexportados)
 
 @dataclass
 class Repetition:
