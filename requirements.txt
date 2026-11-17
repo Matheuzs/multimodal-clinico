@@ -1,8 +1,6 @@
-# Núcleo leve (Task 1). Dependências pesadas ficam em arquivos separados,
-# instalados quando a tarefa correspondente começar.
+# Núcleo leve. As dependências pesadas ficam em requirements-vision.txt e requirements-audio.txt.
 numpy>=1.24
 opencv-python-headless>=4.8
 PyYAML>=6.0
-python-dotenv>=1.0
 pytest>=7.4
-remotezip>=0.12
+remotezip>=0.12       # download parcial do REHAB24-6

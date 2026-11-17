@@ -1,9 +1,4 @@
-# Limiares e parâmetros do MVP (ajustados nas tasks seguintes)
-paths:
-  raw: data/raw
-  samples: data/samples
-  outputs: outputs
-
+# Limiares e parâmetros do MVP.
 ingestion:
   video_exts: [.mp4, .avi, .mov]
   image_exts: [.jpg, .jpeg, .png]

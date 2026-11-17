@@ -2,7 +2,7 @@
 
 Só valida e descreve o arquivo; o processamento fica em vision/ e audio/.
 Áudio: WAV via biblioteca padrão; outros formatos exigem `soundfile`
-(requirements-audio.txt) e são tratados na Task 7.
+(requirements-audio.txt).
 """
 from __future__ import annotations
 
@@ -94,7 +94,7 @@ def validate_audio(path: Path, cfg: dict | None = None) -> MediaInfo:
     path = _check_exists(path)
     if path.suffix.lower() != ".wav":
         raise IngestionError(
-            f"Validação de '{path.suffix}' requer soundfile (Task 7); use WAV por ora."
+            f"Validação implementada para WAV; '{path.suffix}' não é suportado."
         )
     try:
         with wave.open(str(path), "rb") as w:

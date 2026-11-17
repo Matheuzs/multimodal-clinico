@@ -1,10 +1,8 @@
-# Instalar na Task 7 (áudio)
+# Análise de áudio (transcrição, métricas acústicas, sentimento)
 -r requirements.txt
 openai-whisper
-librosa>=0.10
-soundfile>=0.12
-soxr>=0.3
-pydub>=0.25
-SpeechRecognition>=3.10
+soundfile>=0.12       # leitura de WAV sem ffmpeg
+soxr>=0.3             # reamostragem para 16 kHz
+SpeechRecognition>=3.10   # provedor alternativo (recognize_google)
 transformers>=4.40
 torch

@@ -25,7 +25,7 @@ Decisões tomadas e justificativas:
 ```
 Todos os módulos produzem o mesmo tipo de objeto, `Finding` (regra, severidade baixa/média/alta, mensagem, valor, limiar), o que permite a fusão sem conhecer os detalhes de cada modalidade.
 
-Estrutura do código: `src/ingestion` (validação), `src/vision` (pose e regras), `src/audio` (transcrição, VAD, acústica, texto), `src/fusion`, `src/report`, `src/pipeline.py` (execução completa). Parâmetros em `configs/config.yaml`; 90 testes automatizados em `tests/`.
+Estrutura do código: `src/ingestion` (validação), `src/vision` (pose e regras), `src/audio` (transcrição, VAD, acústica, texto), `src/fusion`, `src/report`, `src/pipeline.py` (execução completa). Parâmetros em `configs/config.yaml`; 90 testes automatizados em `tests/`. Evidência completa de cada etapa em `docs/resultados_detalhados.md`.
 
 ## 3. Datasets
 | Modalidade | Dataset | Uso | Observação |
@@ -46,7 +46,7 @@ Estrutura do código: `src/ingestion` (validação), `src/vision` (pose e regras
 - **Texto:** dicionário de 15 categorias de termos críticos em inglês com severidade e **detecção de negação**; **sentimento** com `pipeline('sentiment-analysis')` da biblioteca `transformers` (modelo padrão DistilBERT SST-2, aula 06).
 
 ### 4.3 Fusão
-Regras em `docs/fusao.md`: cada modalidade soma o peso (baixa 1, média 2, alta 3) da maior severidade de cada **regra distinta**; regras de vídeo só valem se ≥ 20% das repetições as dispararam; bônus de +1 quando vídeo e áudio têm achado ≥ média. **ALERTA** se houver achado de severidade alta, ou score ≥ 4 com convergência entre as duas modalidades; **ATENÇÃO** se score ≥ 2; senão NORMAL.
+Regras em `docs/resultados_detalhados.md` (seção 5): cada modalidade soma o peso (baixa 1, média 2, alta 3) da maior severidade de cada **regra distinta**; regras de vídeo só valem se ≥ 20% das repetições as dispararam; bônus de +1 quando vídeo e áudio têm achado ≥ média. **ALERTA** se houver achado de severidade alta, ou score ≥ 4 com convergência entre as duas modalidades; **ATENÇÃO** se score ≥ 2; senão NORMAL.
 
 ## 5. Resultados
 ### 5.1 Vídeo (REHAB24-6, Ex1, câmera 17)

@@ -1,5 +1,4 @@
-# Instalar na Task 4 (visão)
+# Análise de vídeo (MediaPipe Pose)
 -r requirements.txt
-mediapipe==0.10.14  # fixa a API mp.solutions.pose usada na aula 03 (versões 1.x removeram)
+mediapipe==0.10.14    # fixa a API mp.solutions.pose (as versões 1.x a removeram)
 tqdm>=4.66
-# opcional (Task 6): ultralytics>=8.0
