@@ -3,6 +3,7 @@
 openai-whisper
 librosa>=0.10
 soundfile>=0.12
+soxr>=0.3
 pydub>=0.25
 SpeechRecognition>=3.10
 transformers>=4.40

@@ -9,4 +9,4 @@ outputs/*
 !data/raw/.gitkeep
 !data/samples/.gitkeep
 !outputs/.gitkeep
-docs/
+docs/material/

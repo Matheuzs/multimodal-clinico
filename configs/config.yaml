@@ -40,7 +40,7 @@ vision:
     min_detected_ratio: 0.8   # qualidade: fração de frames com pose
 
 audio:
-  whisper_model: base
+  whisper_model: small
   language: en
   thresholds:              # provisórios
     long_pause_s: 1.5
