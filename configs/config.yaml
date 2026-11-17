@@ -1,0 +1,41 @@
+# Limiares e parâmetros do MVP (ajustados nas tasks seguintes)
+paths:
+  raw: data/raw
+  samples: data/samples
+  outputs: outputs
+
+ingestion:
+  video_exts: [.mp4, .avi, .mov]
+  image_exts: [.jpg, .jpeg, .png]
+  audio_exts: [.wav, .mp3, .flac, .m4a]
+  max_video_seconds: 120
+  target_audio_sr: 16000
+
+vision:
+  pose_model_complexity: 1
+  min_detection_confidence: 0.5
+  frame_stride: 3          # analisa 1 a cada N frames
+  thresholds:              # provisórios, calibrar com REHAB24-6
+    asymmetry_deg: 15
+    min_rom_deg: 40
+    visibility_min: 0.5
+
+audio:
+  whisper_model: base
+  language: en
+  thresholds:              # provisórios
+    long_pause_s: 1.5
+    low_speech_rate_wps: 1.5
+    low_energy_db: -35
+  critical_terms:
+    - chest pain
+    - shortness of breath
+    - difficulty breathing
+    - dizziness
+    - fainting
+    - severe pain
+    - bleeding
+
+fusion:
+  severity_weights: {low: 1, medium: 2, high: 3}
+  alert_threshold: 4

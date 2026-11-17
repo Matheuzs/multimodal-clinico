@@ -1,0 +1,5 @@
+# Instalar na Task 4 (visão)
+-r requirements.txt
+mediapipe>=0.10
+tqdm>=4.66
+# opcional (Task 6): ultralytics>=8.0
